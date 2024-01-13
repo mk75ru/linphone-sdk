@@ -1,0 +1,26 @@
+diff --git a/include/linphone/defs.h b/include/linphone/defs.h
+index 28a982bd2..b4b7b6789 100644
+--- a/include/linphone/defs.h
++++ b/include/linphone/defs.h
+@@ -47,6 +47,8 @@
+ #ifndef LINPHONE_DEPRECATED
+ #define LINPHONE_DEPRECATED MS2_DEPRECATED
+ #endif
++#undef LINPHONE_DEPRECATED
++#define LINPHONE_DEPRECATED
+ 
+ 
+ #endif /* LINPHONE_DEFS_H_ */
+diff --git a/include/linphone/utils/general.h b/include/linphone/utils/general.h
+index 562fc9f28..b8644a926 100644
+--- a/include/linphone/utils/general.h
++++ b/include/linphone/utils/general.h
+@@ -70,6 +70,8 @@ LINPHONE_BEGIN_NAMESPACE
+ 		#define LINPHONE_DEPRECATED __attribute__((deprecated))
+ 	#endif
+ #endif
++#undef LINPHONE_DEPRECATED
++#define LINPHONE_DEPRECATED
+ 
+ // -----------------------------------------------------------------------------
+ 

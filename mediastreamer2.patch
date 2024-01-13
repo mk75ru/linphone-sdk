@@ -1,0 +1,70 @@
+diff --git a/src/videofilters/glxvideo.c b/src/videofilters/glxvideo.c
+index f892a21f..937778f8 100644
+--- a/src/videofilters/glxvideo.c
++++ b/src/videofilters/glxvideo.c
+@@ -48,6 +48,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ #include "layouts.h"
+ 
+ #include <X11/Xlib.h>
++#include <X11/Xatom.h>
+ 
+ #include <GL/glew.h>
+ #include <GL/gl.h>
+@@ -434,14 +435,24 @@ static bool_t createX11GLWindow(Display* display, MSVideoSize size, GLXContext*
+ 	if (*win==0){
+ 
+ 		ms_message( "Creating window" );
++		// *win = XCreateWindow( display, RootWindow( display, vi->screen ),
++		// 				200, 200, size.width, size.height, 0, vi->depth, InputOutput,
++		// 				vi->visual,
++		// 				CWBorderPixel|CWColormap|CWEventMask, &swa );
+ 		*win = XCreateWindow( display, RootWindow( display, vi->screen ),
+-						200, 200, size.width, size.height, 0, vi->depth, InputOutput,
++						0, 0, size.width, size.height, 0, vi->depth, InputOutput,
+ 						vi->visual,
+ 						CWBorderPixel|CWColormap|CWEventMask, &swa );
+ 		if ( !(*win) ) {
+ 			ms_error( "Failed to create window." );
+ 			return FALSE;
+ 		}
++
++		Atom wm_state   = XInternAtom (display, "_NET_WM_STATE", True );
++		Atom wm_fullscreen = XInternAtom (display, "_NET_WM_STATE_FULLSCREEN", True );
++		XChangeProperty(display, *win, wm_state, XA_ATOM, 32,
++						PropModeReplace, (unsigned char *)&wm_fullscreen, 1);
++
+ 		XStoreName( display, *win, "Video" );
+ 
+ 		ms_message( "Mapping window" );
+diff --git a/src/videofilters/x11video.c b/src/videofilters/x11video.c
+index fb118e5c..a2114f6c 100644
+--- a/src/videofilters/x11video.c
++++ b/src/videofilters/x11video.c
+@@ -27,6 +27,7 @@
+ #include "layouts.h"
+ 
+ #include <X11/Xlib.h>
++#include <X11/Xatom.h>
+ #include <X11/extensions/Xvlib.h>
+ #include <X11/extensions/Xv.h>
+ #include <X11/extensions/XShm.h>
+@@ -145,10 +146,18 @@ static Window createX11Window(X11Video *s){
+ 	*/
+ 	memset(&wa,0,sizeof(wa));
+ 	wa.event_mask=StructureNotifyMask;
+-	w=XCreateWindow(s->display,DefaultRootWindow(s->display),200,200,
++	// w=XCreateWindow(s->display,DefaultRootWindow(s->display),200,200,
++	//                       s->wsize.width, s->wsize.height,0,CopyFromParent,CopyFromParent,CopyFromParent,
++	//                 CWEventMask|CWBackPixel,&wa);
++	w=XCreateWindow(s->display,DefaultRootWindow(s->display),0,0,
+ 	                      s->wsize.width, s->wsize.height,0,CopyFromParent,CopyFromParent,CopyFromParent,
+ 	                CWEventMask|CWBackPixel,&wa);
+ 
++	Atom wm_state   = XInternAtom (s->display, "_NET_WM_STATE", True );
++	Atom wm_fullscreen = XInternAtom (s->display, "_NET_WM_STATE_FULLSCREEN", True );
++	XChangeProperty(s->display, w, wm_state, XA_ATOM, 32,
++					PropModeReplace, (unsigned char *)&wm_fullscreen, 1);
++
+ 	if (w==0){
+ 		ms_error("Could not create X11 window.");
+ 		return 0;
