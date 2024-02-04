@@ -25,6 +25,8 @@ cmake_minimum_required(VERSION 3.2)
 
 project(linphone-sdk VERSION 5.2.0 LANGUAGES NONE)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(LINPHONESDK_DIR "${CMAKE_CURRENT_LIST_DIR}")
 list(APPEND CMAKE_MODULE_PATH "${LINPHONESDK_DIR}/cmake")
 include(LinphoneSdkUtils)

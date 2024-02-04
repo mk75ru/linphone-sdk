@@ -142,3 +142,6 @@
 [submodule "postquantumcryptoengine"]
 	path = postquantumcryptoengine
 	url = ../postquantumcryptoengine.git
+[submodule "external/aom"]
+	path = external/aom
+	url = https://gitlab.linphone.org/BC/public/external/aom.git
