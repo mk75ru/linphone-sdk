@@ -1,5 +1,6 @@
 #!/bin/sh
-cmake  -G "Ninja"  -B build \
+#-G "Ninja"
+cmake   -B build-arm \
 -DENABLE_AEC=ON \
 -DENABLE_AECM=ON \
 -DENABLE_UNIT_TESTS=OFF \
@@ -14,7 +15,8 @@ cmake  -G "Ninja"  -B build \
 -DENABLE_VPX=ON \
 -DENABLE_OPENH264=OFF \
 -DENABLE_NON_FREE_CODECS=ON \
--DENABLE_QT_GL=ON
+-DENABLE_QT_GL=ON \
+--toolchain  my_toolchain_arm_rv1126.cmake
 #-DENABLE_FFMPEG=ON
 #
 #-DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
