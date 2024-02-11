@@ -17,7 +17,7 @@
 #
 ################################################################################
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.27.7)
 
 
 project(linphone-sdk VERSION 5.2.0 LANGUAGES NONE)
